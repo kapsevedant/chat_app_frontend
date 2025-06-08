@@ -1,0 +1,50 @@
+<div class="container my-4">
+  <div class="card p-4 shadow-sm">
+    <h4 class="mb-3 text-center">Edit Profile</h4>
+
+    <form [formGroup]="profileForm" (ngSubmit)="editProfile()">
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input formControlName="fullName" type="text" class="form-control" id="fullName" />
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input formControlName="username" type="text" class="form-control" id="username" />
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input formControlName="email" type="email" class="form-control" id="email" [disabled]="true" />
+      </div>
+
+      <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" formControlName="gender" id="gender">
+          <option value="" disabled>Select Gender</option>
+          <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Profile Photo</label>
+        <input type="file" class="form-control" (change)="onImageChange($event)" accept="image/*" />
+        <div class="mt-2 text-center">
+          <img [src]="base64Image" *ngIf="base64Image" class="img-thumbnail" width="150" />
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-success" (click)="goBack()">Go back</button>
+        <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid">Update Profile</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+  Profile updated successfully!
+  <button type="button" class="btn-close" (click)="showSuccessAlert = false" aria-label="Close"></button>
+</div>
+
+

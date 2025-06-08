@@ -1,0 +1,25 @@
+.login-wrapper {
+  max-width: 400px;
+  margin: auto;
+}
+
+.login-card {
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (max-width: 576px) {
+  .login-wrapper {
+    max-width: 100%;
+  }
+
+  .login-card {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+}

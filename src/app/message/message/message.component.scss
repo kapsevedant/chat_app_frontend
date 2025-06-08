@@ -1,0 +1,141 @@
+.user-list-scroll {
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 3px;
+  }
+}
+.chat-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.user-list-wrapper {
+  flex-direction: column;
+  height: 100vh;
+  z-index: 1040;
+}
+
+.user-item {
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 0.4rem;
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.logged-in-user {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: white;
+}
+
+.chat-messages {
+  background: #f8f9fa;
+  overflow-y: auto;
+  flex-grow: 1;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 3px;
+  }
+}
+
+.message-input {
+  position: sticky;
+  bottom: 0;
+  z-index: 1020;
+  background-color: #f8f9fa;
+}
+
+.user-avatar {
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.online-status-dot.online {
+  background-color: #22c55e !important;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+  animation: pulse-green 2s infinite;
+}
+
+.online-status-dot.offline {
+  background-color: #9ca3af !important;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* RESPONSIVE TOGGLE */
+@media (max-width: 768px) {
+  .user-list-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 280px;
+    background: #fff;
+    z-index: 1050;
+  }
+
+  .chat-panel {
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .chat-messages {
+    padding: 1rem 0.5rem;
+  }
+
+  .message-input .input-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+.user-list-wrapper {
+  height: 100vh;
+  z-index: 1040;
+  transition: transform 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 56px; // height of mobile navbar
+    left: 0;
+    width: 100%;
+    max-width: 280px;
+    transform: translateX(-100%);
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &.show-user-list {
+    @media (max-width: 768px) {
+      transform: translateX(0);
+    }
+  }
+}
+

@@ -1,0 +1,82 @@
+<div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center bg-light">
+  <div class="login-wrapper w-100 px-3">
+    <!-- Success Alert -->
+    <div *ngIf="successMessage" class="alert alert-success text-center" role="alert">
+      {{ successMessage }}
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger text-center" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" *ngIf="!isLoggedIn" class="card p-4 shadow login-card">
+      <h4 class="text-center mb-4">Login</h4>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email address</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+        />
+        <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="invalid-feedback">
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+        />
+        <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="invalid-feedback">
+          Password is required
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center align-items-center" [disabled]="isLoggingIn || loginForm.invalid">
+        <span *ngIf="isLoggingIn" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isLoggingIn ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Verification Form -->
+    <form [formGroup]="verifyForm" (ngSubmit)="onVerifySubmit()" *ngIf="isLoggedIn" class="card p-4 shadow login-card">
+      <h4 class="text-center mb-4">Verify Email</h4>
+
+      <!-- Email (readonly) -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" formControlName="email" class="form-control" readonly />
+      </div>
+
+      <!-- Verification Code -->
+      <div class="mb-3">
+        <label class="form-label">Verification Code</label>
+        <input
+          type="text"
+          formControlName="verificationCode"
+          class="form-control"
+          [class.is-invalid]="verifyForm.get('verificationCode')?.touched && verifyForm.get('verificationCode')?.invalid"
+        />
+        <div *ngIf="verifyForm.get('verificationCode')?.touched && verifyForm.get('verificationCode')?.invalid" class="invalid-feedback">
+          Verification code is required
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 d-flex justify-content-center align-items-center" [disabled]="isVerifying || verifyForm.invalid">
+        <span *ngIf="isVerifying" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isVerifying ? 'Verifying...' : 'Verify' }}
+      </button>
+    </form>
+  </div>
+</div>

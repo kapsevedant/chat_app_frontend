@@ -1,0 +1,258 @@
+<!-- Error Message -->
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+  {{ errorMessage }}
+</div>
+
+<!-- Success Message (optional) -->
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
+</div>
+<div class="signup-container">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card shadow-lg">
+        <div class="card-header bg-gradient-primary text-white">
+          <h2 class="text-center mb-0 text-dark">Create Your Account</h2>
+          <p class="text-center mb-0 text-dark">Join our community today</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+            <!-- Full Name -->
+            <div class="mb-4">
+              <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="fullName"
+                formControlName="fullName"
+                placeholder="John Doe"
+                [ngClass]="{
+                  'is-invalid': (signupForm.get('fullName')?.invalid &&
+                               (signupForm.get('fullName')?.dirty || signupForm.get('fullName')?.touched)),
+                  'is-valid': signupForm.get('fullName')?.valid
+                }"
+              >
+              <div class="invalid-feedback">
+                <span *ngIf="signupForm.get('fullName')?.errors?.['required']">
+                  Full name is required
+                </span>
+                <span *ngIf="signupForm.get('fullName')?.errors?.['minlength']">
+                  Must be at least 3 characters
+                </span>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+              <input
+                type="email"
+                class="form-control form-control-lg"
+                id="email"
+                formControlName="email"
+                placeholder="example@domain.com"
+                [ngClass]="{
+                  'is-invalid': (signupForm.get('email')?.invalid &&
+                               (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)),
+                  'is-valid': signupForm.get('email')?.valid
+                }"
+              >
+              <div class="invalid-feedback">
+                <span *ngIf="signupForm.get('email')?.errors?.['required']">
+                  Email is required
+                </span>
+                <span *ngIf="signupForm.get('email')?.errors?.['email']">
+                  Please enter a valid email address
+                </span>
+              </div>
+            </div>
+
+            <!-- Username -->
+            <div class="mb-4">
+              <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">{{"@"}}</span>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="username"
+                  formControlName="username"
+                  placeholder="johndoe"
+                  [ngClass]="{
+                    'is-invalid': (signupForm.get('username')?.invalid &&
+                                 (signupForm.get('username')?.dirty || signupForm.get('username')?.touched)),
+                    'is-valid': signupForm.get('username')?.valid
+                  }"
+                >
+              </div>
+              <div class="invalid-feedback">
+                <span *ngIf="signupForm.get('username')?.errors?.['required']">
+                  Username is required
+                </span>
+                <span *ngIf="signupForm.get('username')?.errors?.['pattern']">
+                  Only letters, numbers and underscores allowed
+                </span>
+              </div>
+              <small class="form-text text-muted">This will be your unique identifier</small>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+              <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                id="password"
+                formControlName="password"
+                placeholder="••••••••"
+                [ngClass]="{
+                  'is-invalid': (signupForm.get('password')?.invalid &&
+                               (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)),
+                  'is-valid': signupForm.get('password')?.valid
+                }"
+              >
+              <div class="invalid-feedback">
+                <span *ngIf="signupForm.get('password')?.errors?.['required']">
+                  Password is required
+                </span>
+                <span *ngIf="signupForm.get('password')?.errors?.['minlength']">
+                  Must be at least 6 characters
+                </span>
+              </div>
+              <small class="form-text text-muted">Minimum 6 characters</small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+              <label for="confirmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                placeholder="••••••••"
+                [ngClass]="{
+                  'is-invalid': (signupForm.get('confirmPassword')?.invalid ||
+                                signupForm.errors?.['passwordMismatch']) &&
+                               (signupForm.get('confirmPassword')?.dirty ||
+                                signupForm.get('confirmPassword')?.touched),
+                  'is-valid': signupForm.get('confirmPassword')?.valid &&
+                              !signupForm.errors?.['passwordMismatch']
+                }"
+              >
+              <div class="invalid-feedback">
+                <span *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">
+                  Please confirm your password
+                </span>
+                <span *ngIf="signupForm.errors?.['passwordMismatch'] &&
+                            signupForm.get('confirmPassword')?.valid">
+                  Passwords don't match
+                </span>
+              </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="mb-4">
+              <label class="form-label">Gender <span class="text-danger">*</span></label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="male"
+                    value="male"
+                    formControlName="gender"
+                  >
+                  <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="female"
+                    value="female"
+                    formControlName="gender"
+                  >
+                  <label class="form-check-label" for="female">Female</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="other"
+                    value="other"
+                    formControlName="gender"
+                  >
+                  <label class="form-check-label" for="other">Other</label>
+                </div>
+              </div>
+              <div *ngIf="signupForm.get('gender')?.invalid && signupForm.get('gender')?.touched"
+                   class="text-danger small mt-1">
+                Please select your gender
+              </div>
+            </div>
+
+            <!-- Profile Photo -->
+            <div class="mb-4">
+              <label for="profilePhoto" class="form-label">Profile Photo</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="position-relative" *ngIf="profilePhotoPreview; else uploadPrompt">
+                  <img [src]="profilePhotoPreview" alt="Profile preview"
+                       class="img-thumbnail rounded-circle"
+                       style="width: 100px; height: 100px; object-fit: cover;">
+                  <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle"
+                          (click)="profilePhotoPreview = null; signupForm.get('profilePhoto')?.setValue(null)">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+
+                <ng-template #uploadPrompt>
+                  <div class="upload-area text-center p-3 rounded border"
+                       (click)="fileInput.click()"
+                       style="cursor: pointer; width: 100px; height: 100px;">
+                    <i class="bi bi-camera fs-3 text-muted"></i>
+                    <p class="mb-0 small text-muted">Upload</p>
+                  </div>
+                </ng-template>
+
+                <input #fileInput type="file" class="d-none" id="profilePhoto"
+                       accept="image/jpeg, image/png, image/gif" (change)="onFileChange($event)">
+              </div>
+              <small class="form-text text-muted">Optional. Max 500kb. JPG, PNG, or GIF.</small>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="mb-4 form-check">
+              <input type="checkbox" class="form-check-input" id="terms" required>
+              <label class="form-check-label" for="terms">
+                I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mb-3">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg shadow"
+                [disabled]="signupForm.invalid"
+                [ngClass]="{
+                  'btn-primary': signupForm.valid,
+                  'btn-secondary': signupForm.invalid
+                }"
+              >
+                <span *ngIf="!loading">Create Account</span>
+                <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="text-center">
+              <p class="mb-0">Already have an account? <a routerLink="/login" class="text-primary fw-semibold">Sign In</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

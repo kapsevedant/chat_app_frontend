@@ -1,0 +1,189 @@
+<!-- Topbar with Toggle on Mobile -->
+<div class="p-3 border-bottom bg-white text-center shadow-sm sticky-top d-md-none">
+  <button class="btn btn-sm btn-outline-primary" (click)="toggleUserList()">Users</button>
+</div>
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <!-- Sidebar: Users List (Toggle for Mobile) -->
+    <div
+      class="col-md-4 col-lg-3 bg-light border-end p-0 d-flex flex-column user-list-wrapper"
+      [class.show-user-list]="showUserListOnMobile"
+    >
+      <div class="p-3 border-bottom bg-white text-center shadow-sm sticky-top d-none d-md-block">
+        <h4 class="mb-0 fw-bold text-primary">Chat Users</h4>
+      </div>
+      <div class="overflow-auto flex-grow-1 user-list-scroll">
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item d-flex align-items-center user-item position-relative"
+            *ngFor="let user of otherUsers"
+            tabindex="0"
+            role="button"
+            [class.bg-success-subtle]="user?._id === activeUserId"
+            (click)="getMessages(user?._id); hideUserListOnMobile()"
+          >
+            <div class="position-relative">
+              <img
+                [src]="user?.profilePhoto"
+                alt="{{ user?.username }}"
+                class="rounded-circle user-avatar shadow-sm"
+                style="width: 40px; height: 40px; cursor: pointer;"
+                data-bs-toggle="modal"
+                data-bs-target="#imageModal"
+                (click)="selectedImageUrl = user?.profilePhoto; $event.stopPropagation()"
+              />
+              <span
+                class="position-absolute online-status-dot"
+                [class.online]="isUserOnline(user._id)"
+                [class.offline]="!isUserOnline(user._id)"
+                style="bottom: 2px; right: 2px; width: 12px; height: 12px; border: 2px solid white; border-radius: 50%;"
+              ></span>
+            </div>
+            <div class="ms-3 user-info flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-semibold text-truncate" style="max-width: 120px;">{{ user.fullName }}</div>
+                <small
+                  class="badge rounded-pill"
+                  [class.bg-success]="isUserOnline(user._id)"
+                  [class.bg-secondary]="!isUserOnline(user._id)"
+                >
+                  {{ isUserOnline(user._id) ? 'Online' : 'Offline' }}
+                </small>
+              </div>
+              <small class="text-muted text-truncate d-block" style="max-width: 150px;">{{ user.username }}</small>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+    <!-- Chat Area -->
+    <div class="col-md-8 col-lg-9 p-0 d-flex flex-column" style="height: 100vh;">
+
+      <!-- Logged-in User Info (Fixed at top) -->
+      <div class="p-3 border-bottom bg-white shadow-sm d-flex align-items-center justify-content-between sticky-top">
+        <div class="d-flex align-items-center">
+          <img
+            [src]="loggedInUserData?.profilePhoto"
+            alt="{{ loggedInUserData?.username }}"
+            class="rounded-circle shadow-sm"
+            style="width: 45px; height: 45px; cursor: pointer;"
+            data-bs-toggle="modal"
+            data-bs-target="#profileModal"
+          />
+          <div class="ms-3">
+            <div class="fw-semibold">{{ loggedInUserData?.fullName }}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Messages Area (Scrollable) -->
+      <div class="flex-grow-1 overflow-auto p-3 bg-light" #messageContainer>
+        <div *ngIf="!receiverId" class="text-center text-muted h-100 d-flex flex-column justify-content-center align-items-center">
+          <i class="fas fa-comments fa-3x mb-3 opacity-50"></i>
+          <h5>Select a user to start chatting</h5>
+          <p class="text-center">Choose someone from the users list to begin your conversation.</p>
+        </div>
+
+        <div *ngFor="let msg of receiverMessages" class="mb-3">
+          <div
+            [ngClass]="{
+              'd-flex align-items-start': msg.senderId === receiverId,
+              'd-flex align-items-start flex-row-reverse': msg.senderId !== receiverId
+            }"
+          >
+            <!-- Show avatar only for received messages -->
+            <div *ngIf="msg.senderId === receiverId" class="me-2">
+              <img
+                [src]="getCurrentUserPhoto()"
+                alt="Current chat user"
+                class="rounded-circle shadow-sm"
+                style="width: 32px; height: 32px;"
+              />
+            </div>
+
+            <div>
+              <span
+                class="d-inline-block px-3 py-2 rounded-pill"
+                [ngClass]="{
+                  'bg-light text-dark': msg.senderId === receiverId,
+                  'bg-primary text-white': msg.senderId !== receiverId
+                }"
+              >
+                {{ msg.message }}
+              </span>
+              <div class="text-muted small mt-1">
+                {{ msg.createdAt | date: 'shortTime' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message input (Fixed at bottom) -->
+      <div class="p-3 bg-white border-top sticky-bottom">
+        <div class="input-group shadow-sm rounded-pill overflow-hidden">
+          <input
+            type="text"
+            class="form-control border-0"
+            placeholder="Type a message..."
+            aria-label="Message input"
+            [(ngModel)]="senderMessage"
+            (keyup.enter)="sendMessage(senderMessage)"
+            [disabled]="!receiverId"
+          />
+          <button
+            class="btn btn-primary px-4 fw-bold"
+            type="button"
+            (click)="sendMessage(senderMessage)"
+            [disabled]="!receiverId || !senderMessage?.trim()"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img
+          [src]="loggedInUserData?.profilePhoto"
+          alt="Profile"
+          class="rounded-circle shadow mb-3"
+          style="width: 100px; height: 100px; object-fit: cover;"
+        />
+        <h6 class="fw-bold">{{ loggedInUserData?.fullName }}</h6>
+        <p class="text-muted">{{ loggedInUserData?.username }}</p>
+
+        <div class="d-grid gap-2 mt-4">
+          <button class="btn btn-outline-primary" data-bs-dismiss="modal" (click)="editProfile()">Edit Profile</button>
+          <button class="btn btn-outline-danger" data-bs-dismiss="modal" (click)="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-0">
+      <div class="modal-body p-0">
+        <img [src]="selectedImageUrl" alt="User Image" class="img-fluid" style="border-radius: 0;" />
+      </div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
