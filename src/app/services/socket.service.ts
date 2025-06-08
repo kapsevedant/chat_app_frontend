@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class SocketService {
   private socket: Socket;
-  private readonly SERVER_URL = 'http://localhost:8080'; // adjust if different
+  // private readonly SERVER_URL = 'http://localhost:8080';
+  private readonly SERVER_URL = 'https://chatapp-1e6j.onrender.com';
 
   constructor() {
     this.socket = io(this.SERVER_URL, {
