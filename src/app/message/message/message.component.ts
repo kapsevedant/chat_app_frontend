@@ -21,6 +21,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   showUserListOnMobile:boolean = false;
   activeUserId: string | null = null;
   selectedImageUrl: string | null = null;
+  defaultProfilePic:string = 'assets/images/dp1.jpg'
 
   private subscriptions: Subscription[] = [];
 
