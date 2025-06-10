@@ -10,7 +10,7 @@
       [class.show-user-list]="showUserListOnMobile"
     >
       <div class="p-3 border-bottom bg-white text-center shadow-sm sticky-top d-none d-md-block">
-        <h4 class="mb-0 fw-bold text-primary">Chat Users</h4>
+        <h4 class="mb-0 fw-bold" style="color:#22c55e">Chat Users</h4>
       </div>
       <div class="overflow-auto flex-grow-1 user-list-scroll">
         <ul class="list-group list-group-flush">
@@ -24,12 +24,13 @@
           >
             <div class="position-relative">
               <img
-                [src]="user?.profilePhoto && user.profilePhoto.trim() !== '' ? user.profilePhoto : 'https://www.bing.com/images/search?view=detailV2&ccid=fDMH83EW&id=C7229FBCA6398347DF50F3FF757B4976E2CCC5A7&thid=OIP.fDMH83EWWZtplldpjNt46wAAAA&mediaurl=https%3a%2f%2ftg-stockach.de%2fwp-content%2fuploads%2f2020%2f12%2f5f4d0f15338e20133dc69e95_dummy-profile-pic-300x300.png&exph=300&expw=300&q=TG+Stockach+5f4d0f15338e20133dc69e95_dummy-profile-pic+-+TG+Stockach&mode=overlay&FORM=IQFRBA&ck=62AC695E6B6D61A7381CCC9EABEADE6F&selectedIndex=0'"
+                [src]="user.profilePhoto.trim() !== '' ? user.profilePhoto : defaultProfilePic "
                 class="rounded-circle user-avatar shadow-sm"
                 style="width: 40px; height: 40px; cursor: pointer;"
                 data-bs-toggle="modal"
                 data-bs-target="#imageModal"
-                (click)="selectedImageUrl = user?.profilePhoto && user.profilePhoto.trim() !== '' ? user.profilePhoto : 'https://www.bing.com/images/search?view=detailV2&ccid=fDMH83EW&id=C7229FBCA6398347DF50F3FF757B4976E2CCC5A7&thid=OIP.fDMH83EWWZtplldpjNt46wAAAA&mediaurl=https%3a%2f%2ftg-stockach.de%2fwp-content%2fuploads%2f2020%2f12%2f5f4d0f15338e20133dc69e95_dummy-profile-pic-300x300.png&exph=300&expw=300&q=TG+Stockach+5f4d0f15338e20133dc69e95_dummy-profile-pic+-+TG+Stockach&mode=overlay&FORM=IQFRBA&ck=62AC695E6B6D61A7381CCC9EABEADE6F&selectedIndex=0'; $event.stopPropagation()"
+                (click)="selectedImageUrl = user?.profilePhoto && user.profilePhoto.trim() !== '' ? user.profilePhoto : defaultProfilePic;
+                $event.stopPropagation()"
               />
 
               <span
@@ -64,7 +65,7 @@
       <div class="p-3 border-bottom bg-white shadow-sm d-flex align-items-center justify-content-between sticky-top">
         <div class="d-flex align-items-center">
           <img
-            [src]="loggedInUserData?.profilePhoto"
+            [src]="loggedInUserData.profilePhoto !== '' ? loggedInUserData.profilePhoto : defaultProfilePic "
             class="rounded-circle shadow-sm"
             style="width: 45px; height: 45px; cursor: pointer;"
             data-bs-toggle="modal"
