@@ -24,12 +24,12 @@
           >
             <div class="position-relative">
               <img
-                [src]="user.profilePhoto.trim() !== '' ? user.profilePhoto : defaultProfilePic "
+                [src]="user.profilePhoto === null ? defaultProfilePic : user.profilePhoto"
                 class="rounded-circle user-avatar shadow-sm"
                 style="width: 40px; height: 40px; cursor: pointer;"
                 data-bs-toggle="modal"
                 data-bs-target="#imageModal"
-                (click)="selectedImageUrl = user?.profilePhoto && user.profilePhoto.trim() !== '' ? user.profilePhoto : defaultProfilePic;
+                (click)="selectedImageUrl = user.profilePhoto === null ? defaultProfilePic : user.profilePhoto;
                 $event.stopPropagation()"
               />
 

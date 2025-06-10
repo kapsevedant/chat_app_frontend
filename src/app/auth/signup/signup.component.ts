@@ -87,6 +87,7 @@ export class SignupComponent {
         next: (response) => {
           if(response.success === true) {
             this.loading = false;
+            this.router.navigate(['/login'])
             this.successMessage = response.message;
             // Optional: Reset form after successful submission
             // this.signupForm.reset();
