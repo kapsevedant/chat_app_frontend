@@ -167,7 +167,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   // Get current chat user's photo
   getCurrentUserPhoto(): string {
     const currentUser = this.otherUsers.find(user => user._id === this.receiverId);
-    return currentUser?.profilePhoto || 'assets/default-avatar.png';
+    return currentUser?.profilePhoto ?? this.defaultProfilePic ;
   }
 
   // Update online status for a specific user
